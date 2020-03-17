@@ -48,7 +48,6 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.CoinViewHolder
         return new CoinViewHolder(v, mListener);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(CoinViewHolder holder, int position) {
         Coin coin = mCoins.get(position);
