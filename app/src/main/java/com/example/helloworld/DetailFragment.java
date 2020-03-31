@@ -3,16 +3,21 @@ package com.example.helloworld;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.example.helloworld.Entities.Coin;
-import com.example.helloworld.Entities.CoinLoreResponse;
-import com.google.gson.Gson;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import com.example.helloworld.Entities.Coin;
+import com.example.helloworld.Entities.CoinLoreResponse;
+import com.google.gson.Gson;
+
 import java.util.List;
+
+import static com.example.helloworld.Entities.CoinLoreResponse.json;
 
 public class DetailFragment extends Fragment {
     private TextView name;
@@ -24,34 +29,21 @@ public class DetailFragment extends Fragment {
     private TextView market;
     private TextView volume;
     private ImageView search;
-    public static final String ARG_ITEM_ID = "item_id";
-    private Coin mCoin;
 
     public DetailFragment() {
 
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            Gson gson = new Gson();
-            CoinLoreResponse response = gson.fromJson(CoinLoreResponse.json, CoinLoreResponse.class);
-            List<Coin> coins = response.getData();
-            for (Coin coin : coins) {
-                if (coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
-                    mCoin = coin;
-                }
-            }
-        }
-    }
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
-        /*Bundle arguments = getArguments();
+        Bundle arguments = getArguments();
         int position = arguments.getInt("POSITION");
-        Coin coin = Coin.getCoin().get(position);*/
+
+        Gson gson = new Gson();
+        CoinLoreResponse response = gson.fromJson(json, CoinLoreResponse.class);
+        List<Coin> coins = response.getData();
+        final Coin mCoin = coins.get(position);
 
         name = v.findViewById(R.id.mName);
         shortName = v.findViewById(R.id.mSymbol);
@@ -69,8 +61,8 @@ public class DetailFragment extends Fragment {
         change1h.setText(mCoin.getPercentChange1h() + "%");
         change24h.setText(mCoin.getPercentChange24h() + "$");
         change7d.setText(mCoin.getPercentChange7d() + "$");
-        market.setText("$" + String.format("%,.2f", mCoin.getMarketCapUsd()));
-        volume.setText("$" + String.format("$,.2f", mCoin.getVolume24()));
+        market.setText("$" + String.format("%,.2f", Double.parseDouble(mCoin.getMarketCapUsd())));
+        volume.setText("$" + String.format("%,.2f", mCoin.getVolume24()));
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override

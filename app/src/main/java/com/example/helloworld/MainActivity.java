@@ -1,17 +1,18 @@
 package com.example.helloworld;
 
-import com.example.helloworld.Entities.Coin;
-import com.example.helloworld.Entities.CoinLoreResponse;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Bundle;
-import android.content.Intent;
-import android.view.View;
 
+import com.example.helloworld.Entities.Coin;
+import com.example.helloworld.Entities.CoinLoreResponse;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -58,17 +59,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         };
-        mAdapter = new CoinAdapter(this, coins, listener);
+        mAdapter = new CoinAdapter(coins, listener);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private boolean setWideMode() {
-        if(findViewById(R.id.detailContainer) == null) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return findViewById(R.id.detailContainer) != null;
     }
     private void launchDetailActivity(int message){
         Intent intent = new Intent(this, DetailActivity.class);
