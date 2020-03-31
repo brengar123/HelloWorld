@@ -1,5 +1,7 @@
 package com.example.helloworld;
 
+import com.example.helloworld.Entities.Coin;
+import com.example.helloworld.Entities.CoinLoreResponse;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
+
+import com.google.gson.Gson;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        Gson gson = new Gson();
+        CoinLoreResponse response = gson.fromJson(CoinLoreResponse.json, CoinLoreResponse.class);
+        List<Coin> coins = response.getData();
         wideMode = setWideMode();
 
         CoinAdapter.RecyclerViewClickListener listener = new CoinAdapter.RecyclerViewClickListener() {
@@ -49,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         };
-        mAdapter = new CoinAdapter(Coin.getCoins(), listener);
+        mAdapter = new CoinAdapter(this, coins, listener);
         mRecyclerView.setAdapter(mAdapter);
     }
 
