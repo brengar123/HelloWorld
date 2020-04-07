@@ -31,7 +31,6 @@ public class DetailFragment extends Fragment {
     private ImageView search;
 
     public DetailFragment() {
-
     }
 
     @Override

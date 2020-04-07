@@ -58,9 +58,15 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.CoinViewHolder
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mCoins.size();
+    }
+
+}
+
+    public void setCoins(List<Coin> coins) {
+        mCoins.clear();
+        mCoins.addAll(coins);
     }
 }

@@ -3,6 +3,7 @@ package com.example.helloworld;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,14 @@ import com.example.helloworld.Entities.Coin;
 import com.example.helloworld.Entities.CoinLoreResponse;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,8 +67,38 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         };
-        mAdapter = new CoinAdapter(coins, listener);
-        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter = new CoinAdapter(new ArrayList<Coin>(), listener);
+        Toast toast = Toast.makeText(this, "List Updated!", Toast.LENGTH_LONG * 3);
+
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.coinlore.net/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            CoinService service = retrofit.create(CoinService.class);
+            Call<CoinLoreResponse> coinsCall = service.getCoins();
+
+            coinsCall.enqueue(new Callback<CoinLoreResponse>() {
+                @Override
+                public void onResponse(Call<CoinLoreResponse> call, Response<CoinLoreResponse> response) {
+                    if (response.isSuccessful()) {
+                        List<Coin> coins = response.body().getData();
+                        mAdapter.setCoins(coins);
+                        mRecyclerView.setAdapter(mAdapter);
+                        toast.show();
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CoinLoreResponse> call, Throwable t) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private boolean setWideMode() {
