@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.helloworld.Entities.Coin;
 import com.example.helloworld.Entities.CoinLoreResponse;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "au.edu.unsw.infs3634.beers.MESSAGE";
     private boolean wideMode;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private CoinAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
 
@@ -44,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        Gson gson = new Gson();
-        CoinLoreResponse response = gson.fromJson(CoinLoreResponse.json, CoinLoreResponse.class);
-        List<Coin> coins = response.getData();
         wideMode = setWideMode();
 
         CoinAdapter.RecyclerViewClickListener listener = new CoinAdapter.RecyclerViewClickListener() {
